@@ -73,6 +73,48 @@ order by EmployeeID --ORDERING FIRST BY eMPLOYEEid
 OFFSET 2 ROWS --SKIPPING FIRST 2 ROWS
 FETCH NEXT 5 ROWS ONLY --SHOWING NEXT 5 ROWS
 
+/*MERGED*/
+
+WITH Top10Percent AS (
+	SELECT TOP 10 percent * --selecting top 10 percent
+	FROM Lesson_3.Employees
+	ORDER BY Salary desc --ordering in descending order
+),
+
+AverageSalaryByDepartment as (
+	SELECT Department, AVG(SALARY)  as Average_Salary  --finding average salary
+	FROM Lesson_3.Employees
+	GROUP BY Department --grouping by department
+
+),
+SalaryCategory as (
+	SELECT Salary, --selecting Salary column 
+		CASE 
+			WHEN Salary > 80000 then 'High' 
+			WHEN Salary between 50000 and 80000 THEN 'Medium' --giving conditions and results
+			WHEN Salary<50000 THEN 'Low'
+			WHEN Salary IS Null then 'Not Provided' --in case of salary is Null
+		END AS 'Salary_Category' --giving column name
+	FROM Lesson_3.Employees
+
+),
+DepartmentAvgSalaryDesc AS (
+    SELECT Department, AVG(SALARY) AS Average_Salary
+    FROM Lesson_3.Employees
+    GROUP BY Department
+    ORDER BY Average_Salary DESC
+)
+select * from Lesson_3.Employees
+order by EmployeeID --ORDERING FIRST BY eMPLOYEEid
+OFFSET 2 ROWS --SKIPPING FIRST 2 ROWS
+FETCH NEXT 5 ROWS ONLY
+
+
+SELECT * FROM Top10Percent
+
+
+
+
 
 /*TASK2*/
 
@@ -172,6 +214,27 @@ GROUP BY
 HAVING SUM(TotalAmount) > 5000
 ORDER BY TotalRevenue DESC;
 
+select * from [Lesson_3].[Orders];
+/*merged*/
+select 
+	CASE 
+        WHEN [Status] IN ('Shipped', 'Delivered') THEN 'Completed'
+        WHEN [Status] = 'Pending' THEN 'Pending'
+        WHEN [Status] = 'Cancelled' THEN 'Cancelled'
+        WHEN [Status] IS NULL THEN 'Not provided'
+    END AS OrderStatus,
+	SUM(TotalAmount) AS TotalRevenue
+FROM [Lesson_3].[Orders]
+where OrderDate between '2023-01-01' and '2023-12-31' --giving condition
+GROUP BY 
+    CASE 
+        WHEN [Status] IN ('Shipped', 'Delivered') THEN 'Completed'
+        WHEN [Status] = 'Pending' THEN 'Pending'
+        WHEN [Status] = 'Cancelled' THEN 'Cancelled'
+        WHEN [Status] IS NULL THEN 'Not provided'
+    END
+HAVING SUM(TotalAmount) > 2000
+ORDER BY TotalRevenue DESC;
 
 
 
@@ -234,3 +297,23 @@ from [Lesson_3].[Products]
 order by Price DESC
 OFFSET 5 ROWS
 FETCH NEXT (@totalRows-5) ROWS ONLY;
+
+
+
+/*Merged*/
+
+
+select *  from [Lesson_3].[Products]
+
+select 
+	Category,
+	max(Price) as MaxPrice,
+	IIF(sum(Stock)=0, 'Out of Stock', 
+		iif(sum(stock) between 1 and 10, 'Low Stock','In stock')
+		) as Inventory_status
+
+
+
+from [Lesson_3].[Products]
+group by Category	
+order by MaxPrice desc
