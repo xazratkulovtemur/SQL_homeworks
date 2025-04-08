@@ -22,7 +22,7 @@ select * from [dbo].[TestMultipleZero] --original table
 select *
 from [dbo].[TestMultipleZero]
 WHERE A <> 0 OR B <> 0 OR C <> 0 OR D <> 0
-select * from [dbo].[TestMultipleZero] --filtered table
+ --filtered table
 
 
 /*TASK2*/
@@ -51,6 +51,24 @@ cross apply(
 	values(Max1), (Max2),(Max3) --assignning columns to value
 ) as AllMaxes(value)
 group by Year1 --grouping table by Year1
+
+/*other way*/
+
+select Year1,
+	case 
+		when Max1>Max2 and Max1>Max3 then Max1
+		when Max2>Max1 and Max2>Max3 then Max2
+		else Max3
+	end as Maxvalue
+
+from TestMax
+
+/*Greatest*/
+
+select year1,
+	greatest(Max1, Max2, Max3) --new built in function for sql server 2022 +
+from TestMax
+
 
 /*task3*/
 
@@ -102,4 +120,12 @@ ORDER BY
     CASE WHEN letter = 'b' THEN 2 ELSE 1 END,
     letter;  --b in last
 
+select letter
+from letters
+order by
+	case when letter='b' then 2 else 0 end,
+	letter;
 
+select letter from letters
+order by 
+	CASE WHEN letter = '' 
