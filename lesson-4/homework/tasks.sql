@@ -50,10 +50,12 @@ from TestMax
 cross apply(
 	values(Max1), (Max2),(Max3) --assignning columns to value
 ) as AllMaxes(value)
-group by Year1 --grouping table by Year1
+group by Year1 --grouping table by Year1 
 
-/*other way*/
 
+ 
+/*other way*/ 
+ 
 select Year1,
 	case 
 		when Max1>Max2 and Max1>Max3 then Max1

@@ -5,7 +5,7 @@ CREATE TABLE student(
 	name varchar(50),
 	age int
 );
-
+select * from student
 ALTER TABLE student
 ALTER COLUMN id int not null
 
@@ -202,3 +202,4 @@ values
 select * from Book
 select * from Member 
 select * from Loan
+
