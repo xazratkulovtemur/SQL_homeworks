@@ -178,3 +178,16 @@ on c.CustomerID=o.CustomerID
 join OrderDetails d
 on o.orderID=d.OrderID
 group by c.CustomerID, c.CustomerName;
+
+
+--extra questions
+
+select c.CustomerName, string_agg(p.ProductName, ',')
+from Customers c
+join Orders o
+on c.CustomerID=o.CustomerID
+join OrderDetails d
+on o.OrderID=d.OrderID
+join Products p
+on d.ProductID=p.ProductID
+group by c.CustomerName
