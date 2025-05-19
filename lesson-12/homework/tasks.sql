@@ -6,7 +6,7 @@
 --select * from sys.columns
 --select * from sys.types
 
-
+DECLARE @INFOTABLE TABLE (databasename nvarchar(255), schemaname nvarchar(255), tablename nvarchar(255), columnname nvarchar(255), datatype nvarchar(50))
 declare @sql_query nvarchar(max);
 declare @databasename nvarchar(255);
 declare @i int=1;
@@ -37,12 +37,14 @@ begin
 		join sys.columns c on t.object_id=c.object_id
 		join sys.types ty on c.user_type_id=ty.user_type_id
 	';
+	insert into @INFOTABLE
 	exec(@sql_query)
+
 
 	set @i=@i+1
 end
 
-
+	select * from @infotable
 
 
 --==================
